@@ -19,7 +19,7 @@ https://github.com/prohand/gladys-rfplayer instead. */}
 
 import ExternalIntegrationHeader from "@site/src/components/ExternalIntegrationHeader";
 
-<ExternalIntegrationHeader integration={{"name":"RFPlayer","description":"Clé RFPlayer 433/868 MHz : capteurs, télécommandes, alarmes et actionneurs radio.","owner":"prohand","owner_avatar_url":"https://avatars.githubusercontent.com/u/20227162?v=4","repo_url":"https://github.com/prohand/gladys-rfplayer","cover_url":"https://integration-store-storage.gladysassistant.com/covers/prohand--gladys-rfplayer.png","type":"device","version":"2.2.0","gladys_version":">=5.3.0","stars":0,"pushed_at":"2026-10-25T16:55:54Z"}} />
+<ExternalIntegrationHeader integration={{"name":"RFPlayer","description":"Clé RFPlayer 433/868 MHz : capteurs, télécommandes, alarmes et actionneurs radio.","owner":"prohand","owner_avatar_url":"https://avatars.githubusercontent.com/u/20227162?v=4","repo_url":"https://github.com/prohand/gladys-rfplayer","cover_url":"https://integration-store-storage.gladysassistant.com/covers/prohand--gladys-rfplayer.png","type":"device","version":"2.2.3","gladys_version":">=5.3.0","stars":0,"pushed_at":"2026-11-20T13:26:51Z"}} />
 
 Reliez une clé **RFPlayer RFP1000 de Ziblue / GCE Electronics** (433 et 868
 MHz) à Gladys : capteurs et détecteurs radio, télécommandes et interrupteurs
@@ -200,6 +200,24 @@ appairage.
 - **Un volet ne bouge pas** : il doit être appairé une fois (partie 4). En RTS,
   le volet doit être en mode programmation (PROG maintenu sur sa télécommande)
   au moment de l'envoi de la trame d'appairage.
+- **Un volet RTS appairé ne répond plus après un nouvel appairage** : en RTS,
+  la trame d'appairage est une bascule. Un moteur qui connaît déjà l'adresse
+  l'oublie, un moteur qui ne la connaît pas l'apprend. Ne réappairez jamais une
+  adresse qu'un volet connaît encore : prenez une adresse neuve, ou retirez
+  d'abord l'ancienne (PROG maintenu sur la télécommande d'origine, puis le
+  formulaire **Envoyer un ordre radio** avec l'ordre « Désappairer »).
+- **Un volet RTS refuse tout nouvel appairage** : un moteur Somfy ne retient
+  qu'un nombre limité de télécommandes (souvent une douzaine). Après de nombreux
+  essais, retirez les adresses inutiles comme ci-dessus, ou remettez le moteur à
+  zéro selon sa notice (cela efface aussi la télécommande d'origine).
+- **Deux volets RTS bougent ensemble** : ils ont appris la même adresse, en
+  général parce que PROG a été fait sur une télécommande de groupe. Appairez un
+  volet à la fois, depuis sa télécommande individuelle, avec une adresse par
+  volet.
+- **Repartir de zéro** : l'appairage est gardé par les récepteurs, pas par la
+  clé. Supprimez les appareils dans Gladys et videz le champ **Actionneurs**,
+  mais n'envoyez pas `FACTORYRESET` à la clé : elle oublierait les compteurs
+  RTS, et les volets déjà appairés ne lui répondraient plus.
 - **Trop d'appareils dans Découverte** : montez la qualité radio minimale,
   décochez les protocoles inutilisés.
 
@@ -222,7 +240,7 @@ Voici les paramètres demandés par RFPlayer dans son écran de configuration da
 ## Comment installer RFPlayer dans Gladys
 
 1. Dans Gladys, ouvrez **Intégrations** : RFPlayer apparaît dans le catalogue, aux côtés des intégrations natives, avec un badge communautaire.
-2. Cliquez sur **Installer**. Gladys télécharge l'image Docker (`ghcr.io/prohand/gladys-rfplayer:2.2.0`), la démarre dans un bac à sable isolé du cœur, et génère l'interface de l'intégration (appareils, découverte et configuration).
+2. Cliquez sur **Installer**. Gladys télécharge l'image Docker (`ghcr.io/prohand/gladys-rfplayer:2.2.3`), la démarre dans un bac à sable isolé du cœur, et génère l'interface de l'intégration (appareils, découverte et configuration).
 3. Ouvrez l'écran **Configuration** de l'intégration, remplissez les paramètres, puis enregistrez.
 4. Vous pouvez aussi l'installer directement depuis l'URL de son dépôt : [https://github.com/prohand/gladys-rfplayer](https://github.com/prohand/gladys-rfplayer).
 
